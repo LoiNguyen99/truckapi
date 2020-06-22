@@ -23,7 +23,8 @@ namespace truckapi.Controllers
         [HttpGet]
         public IActionResult Login(String userId, String password)
         {
-            User user = _context.User.Where(u => u.UserId == userId).Where(u => u.Password == password).SingleOrDefault();
+            User user = _context.User.Include(u => u.Role)
+                .Where(u => u.UserId == userId).Where(u => u.Password == password).SingleOrDefault();
 
             if (user != null)
             {
