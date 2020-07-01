@@ -10,7 +10,7 @@ namespace truckapi.Models
         public int ReciverId { get; set; } 
         public String FullName { get; set; }
         public String PhoneNumber { get; set; }
-
+        public int AddressId { get; set; }
         public Address Address { get; set; }
 
         public List<Request> Requests { get; set; }
