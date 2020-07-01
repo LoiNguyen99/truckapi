@@ -25,7 +25,7 @@ namespace truckapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequest()
         {
-            return await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places).ToListAsync();
+            return await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places).Include(r => r.Quotations).ToListAsync();
         }
 
         // GET: api/Requests/5
