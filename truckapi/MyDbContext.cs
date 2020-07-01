@@ -25,6 +25,9 @@ namespace truckapi
                 , new Models.Status(statusId: 3, value: "Hoàn thành", color: "0xff66bb6a")
                 , new Models.Status(statusId: 4, value: "Đã hủy", color: "0xfff44336"));
 
+            //request
+            modelBuilder.Entity<Request>().HasOne(r => r.Status).WithMany(s => s.Requests).HasForeignKey(r => r.StatusId);
+
         }
 
         public DbSet<Role> Role { get; set; }

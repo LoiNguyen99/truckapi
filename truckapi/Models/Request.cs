@@ -16,7 +16,7 @@ namespace truckapi.Models
         public DateTime DateCreate { get; set; }
         public DateTime ValidDate { get; set; }
         public String Note { get; set; }
-        public String StatusId { get; set; }
+        public int StatusId { get; set; }
         public String UserId { get; set; }
 
         public User User { get; set; }
