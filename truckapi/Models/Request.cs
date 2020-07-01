@@ -16,14 +16,14 @@ namespace truckapi.Models
         public DateTime DateCreate { get; set; }
         public DateTime ValidDate { get; set; }
         public String Note { get; set; }
-        public String Status { get; set; }
-
+        public String StatusId { get; set; }
         public String UserId { get; set; }
 
         public User User { get; set; }
         public ICollection<Quotation> Quotations { get; set; }
         public CommodityOwner CommodityOwner { get; set; }
         public Reciver Reciver { get; set; }
+        public Status Status { get; set; }
 
 
     }

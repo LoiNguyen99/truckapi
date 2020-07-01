@@ -19,6 +19,12 @@ namespace truckapi
             //User
             modelBuilder.Entity<Quotation>().HasOne(q => q.Driver).WithMany(d => d.Quotations).HasForeignKey(q => q.DriverId);
 
+            //Status
+            modelBuilder.Entity<Status>().HasData(new Models.Status(statusId: 1, value: "Chờ báo giá", color: "0xffffeb3b")
+                , new Models.Status(statusId: 2, value: "Đang vận chuyển", color: "0xff2196f3")
+                , new Models.Status(statusId: 3, value: "Hoàn thành", color: "0xff66bb6a")
+                , new Models.Status(statusId: 4, value: "Đã hủy", color: "0xfff44336"));
+
         }
 
         public DbSet<Role> Role { get; set; }
@@ -29,5 +35,7 @@ namespace truckapi
         public DbSet<truckapi.Models.Place> Place { get; set; }
         public DbSet<truckapi.Models.CommodityOwner> CommodityOwner { get; set; }
         public DbSet<truckapi.Models.Reciver> Reciver { get; set; }
+        public DbSet<truckapi.Models.Status> Status { get; set; }
+
     }
 }
