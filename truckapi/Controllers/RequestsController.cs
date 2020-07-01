@@ -28,7 +28,7 @@ namespace truckapi.Controllers
             return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
                 .Include(r => r.Reciver.Address.Places)
                 .Include(r => r.Quotations)
-                .Include(r => r.Status)
+                .Include(r => r.Status).OrderBy(r => r.StatusId).OrderByDescending(r => r.DateCreate)
                 .ToListAsync();
         }
 
