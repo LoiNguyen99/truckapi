@@ -10,7 +10,7 @@ namespace truckapi.Models
         public int QuotationId { get; set; }
         public double Price { get; set; }
         public String Note { get; set; }
-
+        public DateTime Date { get; set; }
         public String DriverId { get; set; }
         public User Driver { get; set; }
 

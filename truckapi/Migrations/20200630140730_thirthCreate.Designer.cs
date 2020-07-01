@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using truckapi;
 
 namespace truckapi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200630140730_thirthCreate")]
+    partial class thirthCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,29 +34,6 @@ namespace truckapi.Migrations
                     b.HasKey("AddressId");
 
                     b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("truckapi.Models.CommodityOwner", b =>
-                {
-                    b.Property<int>("CommodityOwnerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CommodityOwnerId");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("CommodityOwner");
                 });
 
             modelBuilder.Entity("truckapi.Models.Place", b =>
@@ -106,29 +85,6 @@ namespace truckapi.Migrations
                     b.HasIndex("RequestId");
 
                     b.ToTable("Quotation");
-                });
-
-            modelBuilder.Entity("truckapi.Models.Reciver", b =>
-                {
-                    b.Property<int>("ReciverId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ReciverId");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Reciver");
                 });
 
             modelBuilder.Entity("truckapi.Models.Request", b =>
@@ -191,6 +147,29 @@ namespace truckapi.Migrations
                     b.ToTable("Role");
                 });
 
+            modelBuilder.Entity("truckapi.Models.ShippingInf", b =>
+                {
+                    b.Property<int>("ShippingInfId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingInfId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("ShippingInf");
+                });
+
             modelBuilder.Entity("truckapi.Models.User", b =>
                 {
                     b.Property<string>("UserId")
@@ -210,13 +189,6 @@ namespace truckapi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("truckapi.Models.CommodityOwner", b =>
-                {
-                    b.HasOne("truckapi.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("truckapi.Models.Place", b =>
@@ -241,23 +213,16 @@ namespace truckapi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("truckapi.Models.Reciver", b =>
-                {
-                    b.HasOne("truckapi.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-                });
-
             modelBuilder.Entity("truckapi.Models.Request", b =>
                 {
-                    b.HasOne("truckapi.Models.CommodityOwner", "CommodityOwner")
-                        .WithMany("Requests")
+                    b.HasOne("truckapi.Models.ShippingInf", "CommodityOwner")
+                        .WithMany()
                         .HasForeignKey("CommodityOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("truckapi.Models.Reciver", "Reciver")
-                        .WithMany("Requests")
+                    b.HasOne("truckapi.Models.ShippingInf", "Reciver")
+                        .WithMany()
                         .HasForeignKey("ReciverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -265,6 +230,13 @@ namespace truckapi.Migrations
                     b.HasOne("truckapi.Models.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("truckapi.Models.ShippingInf", b =>
+                {
+                    b.HasOne("truckapi.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("truckapi.Models.User", b =>

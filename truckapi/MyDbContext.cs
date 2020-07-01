@@ -18,11 +18,16 @@ namespace truckapi
         {
             //User
             modelBuilder.Entity<Quotation>().HasOne(q => q.Driver).WithMany(d => d.Quotations).HasForeignKey(q => q.DriverId);
+
         }
 
         public DbSet<Role> Role { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Quotation> Quotation { get; set; }
         public DbSet<Request> Request { get; set; }
+        public DbSet<truckapi.Models.Address> Address { get; set; }
+        public DbSet<truckapi.Models.Place> Place { get; set; }
+        public DbSet<truckapi.Models.CommodityOwner> CommodityOwner { get; set; }
+        public DbSet<truckapi.Models.Reciver> Reciver { get; set; }
     }
 }
