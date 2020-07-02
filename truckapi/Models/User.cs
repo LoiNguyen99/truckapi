@@ -10,7 +10,10 @@ namespace truckapi.Models
         public String UserId { get; set; }
         public String FullName { get; set; }
         public String Password { get; set; }
-
+        public String PhoneNumber { get; set; }
+        public String Gender { get; set; }
+        public String DateOfBirth { get; set; }
+        public String ImagePath { get; set; }
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
