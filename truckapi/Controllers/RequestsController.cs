@@ -27,7 +27,7 @@ namespace truckapi.Controllers
         {
             return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
                 .Include(r => r.Reciver.Address.Places)
-                .Include(r => r.Quotations)
+                .Include(r => r.Quotations).ThenInclude(q => q.Driver)
                 .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
                 .ToListAsync();
         }
