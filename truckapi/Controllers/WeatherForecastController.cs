@@ -1,14 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace truckapi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("test")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -23,17 +25,17 @@ namespace truckapi.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost]
+        public async Task<String> Get([FromForm] Image image)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            Stream fs = image.File.OpenReadStream();
+            return await FileServices.getFile(fs, image.Name);
+        }
+
+        public class Image
+        {
+            public IFormFile File { get; set; }
+            public string Name { get; set; }
         }
     }
 }
