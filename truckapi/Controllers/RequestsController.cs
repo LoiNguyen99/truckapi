@@ -25,7 +25,7 @@ namespace truckapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status)
         {
-            if (status != null || status.Length > 0)
+            if (status == null || status.Length == 0)
             {
                 return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
                     .Include(r => r.Reciver.Address.Places)
