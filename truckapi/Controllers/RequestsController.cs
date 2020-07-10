@@ -23,13 +23,25 @@ namespace truckapi.Controllers
 
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequest()
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status)
         {
-            return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
-                .Include(r => r.Reciver.Address.Places)
-                .Include(r => r.Quotations).ThenInclude(q => q.Driver)
-                .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
-                .ToListAsync();
+            if (status != null || status.Length > 0)
+            {
+                return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
+                    .Include(r => r.Reciver.Address.Places)
+                    .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                    .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
+                    .Include(r => r.Reciver.Address.Places)
+                    .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                    .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                    .Where(r => r.StatusId == int.Parse(status))
+                    .ToListAsync();
+            }
         }
 
         // GET: api/Requests/5
