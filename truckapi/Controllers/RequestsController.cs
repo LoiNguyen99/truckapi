@@ -48,7 +48,8 @@ namespace truckapi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var request = await _context.Request.FindAsync(id);
+            var request = await _context.Request.Include(r => r.CommodityOwner.Address.Places)
+                    .Include(r => r.Reciver.Address.Places).FirstAsync(r => r.CommodityOwnerId == id);
 
             if (request == null)
             {
