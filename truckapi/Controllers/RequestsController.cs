@@ -49,7 +49,7 @@ namespace truckapi.Controllers
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
             var request = await _context.Request.Include(r => r.CommodityOwner.Address.Places)
-                    .Include(r => r.Reciver.Address.Places).FirstAsync(r => r.CommodityOwnerId == id);
+                    .Include(r => r.Reciver.Address.Places).FirstAsync(r => r.RequestId == id);
 
             if (request == null)
             {
