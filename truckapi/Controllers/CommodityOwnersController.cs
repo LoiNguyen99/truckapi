@@ -34,7 +34,7 @@ namespace truckapi.Controllers
                 {
                     Default = true;
                 }
-                return await _context.CommodityOwner.Where(c => c.UserId == userId && c.IsDefault == Default).ToListAsync();
+                return await _context.CommodityOwner.Where(c => c.UserId == userId && c.IsDefault == Default).Include(c => c.Address.Places).ToListAsync();
             }
             return await _context.CommodityOwner.ToListAsync();
         }
