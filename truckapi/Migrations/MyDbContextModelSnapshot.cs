@@ -47,12 +47,20 @@ namespace truckapi.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommodityOwnerId");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CommodityOwner");
                 });
@@ -121,12 +129,20 @@ namespace truckapi.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReciverId");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reciver");
                 });
@@ -146,6 +162,9 @@ namespace truckapi.Migrations
 
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DriverId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -277,6 +296,10 @@ namespace truckapi.Migrations
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("truckapi.Models.User", "User")
+                        .WithMany("CommodityOwners")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("truckapi.Models.Place", b =>
@@ -308,6 +331,10 @@ namespace truckapi.Migrations
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("truckapi.Models.User", "User")
+                        .WithMany("Recivers")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("truckapi.Models.Request", b =>

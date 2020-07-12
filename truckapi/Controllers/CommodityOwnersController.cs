@@ -23,8 +23,19 @@ namespace truckapi.Controllers
 
         // GET: api/CommodityOwners
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommodityOwner>>> GetCommodityOwner()
+        public async Task<ActionResult<IEnumerable<CommodityOwner>>> GetCommodityOwner(String userId, String isDefault)
         {
+            if(userId != null && isDefault == null)
+            {
+                return await _context.CommodityOwner.Where(c => c.UserId == userId).ToListAsync();
+            }else if (userId != null && isDefault != null)
+            {   bool Default = false;
+                if(isDefault.ToLower() == "true")
+                {
+                    Default = true;
+                }
+                return await _context.CommodityOwner.Where(c => c.UserId == userId && c.IsDefault == Default).ToListAsync();
+            }
             return await _context.CommodityOwner.ToListAsync();
         }
 

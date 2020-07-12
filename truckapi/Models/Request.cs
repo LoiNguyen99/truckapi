@@ -18,7 +18,7 @@ namespace truckapi.Models
         public String Note { get; set; }
         public int StatusId { get; set; }
         public String UserId { get; set; }
-
+        public String DriverId { get; set; }
         public User User { get; set; }
         public ICollection<Quotation> Quotations { get; set; }
         public CommodityOwner CommodityOwner { get; set; }

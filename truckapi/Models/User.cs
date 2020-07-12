@@ -19,7 +19,8 @@ namespace truckapi.Models
         public Role Role { get; set; }
 
         public List<Request> Requests { get; set; }
-
+        public List<CommodityOwner> CommodityOwners { get; set; }
+        public List<Reciver> Recivers { get; set; }
         public List<Quotation> Quotations { get; set; }
     }
 }
