@@ -42,6 +42,21 @@ namespace truckapi.Controllers
             return user;
         }
 
+        [HttpGet("{id}/requests")]
+        public async Task<ActionResult> GetRequest(string id, bool isDriver)
+        {
+            if (isDriver == true)
+            {
+                Request request = await _context.Request.Where(r => r.DriverId == id).FirstOrDefaultAsync();
+                return Ok(request);
+            }else
+            {
+                return NotFound();
+            }
+
+            
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
