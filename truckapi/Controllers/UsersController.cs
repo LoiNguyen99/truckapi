@@ -47,7 +47,12 @@ namespace truckapi.Controllers
         {
             if (isDriver == true)
             {
-                Request request = await _context.Request.Where(r => r.DriverId == id).FirstOrDefaultAsync();
+                Request request = await _context.Request.Where(r => r.DriverId == id)
+                    .Include(r => r.User)
+                    .Include(r => r.Status)
+                    .Include(r => r.Reciver)
+                    .Include(r => r.CommodityOwner)
+                    .FirstOrDefaultAsync();
                 return Ok(request);
             }else
             {
