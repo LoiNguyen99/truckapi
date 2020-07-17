@@ -50,8 +50,9 @@ namespace truckapi.Controllers
                 List<Request> request = await _context.Request.Where(r => r.DriverId == id)
                     .Include(r => r.User)
                     .Include(r => r.Status)
-                    .Include(r => r.Reciver)
-                    .Include(r => r.CommodityOwner)
+                    .Include(r => r.Reciver.Address.Places)
+                    .Include(r => r.CommodityOwner.Address.Places)
+                    
                     .ToListAsync();
                 return Ok(request);
             }else
