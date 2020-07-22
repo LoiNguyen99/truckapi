@@ -23,7 +23,7 @@ namespace truckapi.Controllers
 
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status, String driverId)
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status, String driverId, bool isQuote)
         {
             if (driverId == null)
             {
@@ -47,27 +47,41 @@ namespace truckapi.Controllers
             }
             else
             {
-                List<Request> requests = await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places)
-                            .Include(r => r.User)
-                            .Include(r => r.Quotations).ThenInclude(q => q.Driver)
-                            .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
-                            .Where(r => r.StatusId == int.Parse(status))
-                            .ToListAsync();
-                List<Request> removeRequests = new List<Request>();
-                foreach (Request request in requests)
+                if (isQuote == false)
                 {
-                    if (request.Quotations.Any(q => q.DriverId == driverId))
+                    List<Request> requests = await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places)
+                                .Include(r => r.User)
+                                .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                                .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                                .Where(r => r.StatusId == int.Parse(status))
+                                .ToListAsync();
+                    List<Request> removeRequests = new List<Request>();
+                    foreach (Request request in requests)
                     {
-                        removeRequests.Add(request);
+                        if (request.Quotations.Any(q => q.DriverId == driverId))
+                        {
+                            removeRequests.Add(request);
+                        }
                     }
-                }
 
-                foreach (Request request1 in removeRequests)
+                    foreach (Request request1 in removeRequests)
+                    {
+                        requests.Remove(request1);
+                    }
+
+
+                    return requests;
+                }
+                else
                 {
-                    requests.Remove(request1);
+                    List<Request> requests = await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places)
+                                .Include(r => r.User)
+                                .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                                .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                                .Where(r => r.StatusId == int.Parse(status) && r.Quotations.Any(q => q.DriverId == driverId))
+                                .ToListAsync();
+                    return requests;
                 }
-
-                return requests;
             }
 
         }
