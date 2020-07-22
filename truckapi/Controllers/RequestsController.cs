@@ -23,25 +23,52 @@ namespace truckapi.Controllers
 
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status)
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequest(String status, String driverId)
         {
-            if (status == null || status.Length == 0)
+            if (driverId == null)
             {
-                return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
-                    .Include(r => r.Reciver.Address.Places)
-                    .Include(r => r.Quotations).ThenInclude(q => q.Driver)
-                    .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
-                    .ToListAsync();
+                if (status == null || status.Length == 0)
+                {
+                    return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
+                        .Include(r => r.Reciver.Address.Places)
+                        .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                        .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                        .ToListAsync();
+                }
+                else
+                {
+                    return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
+                            .Include(r => r.Reciver.Address.Places)
+                            .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                            .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                            .Where(r => r.StatusId == int.Parse(status))
+                            .ToListAsync();
+                }
             }
             else
             {
-                return await _context.Request.Include(r => r.CommodityOwner.Address.Places)
-                    .Include(r => r.Reciver.Address.Places)
-                    .Include(r => r.Quotations).ThenInclude(q => q.Driver)
-                    .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
-                    .Where(r => r.StatusId == int.Parse(status))
-                    .ToListAsync();
+                List<Request> requests = await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places)
+                            .Include(r => r.Quotations).ThenInclude(q => q.Driver)
+                            .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
+                            .Where(r => r.StatusId == int.Parse(status))
+                            .ToListAsync();
+                List<Request> removeRequests = new List<Request>();
+                foreach (Request request in requests)
+                {
+                    if (request.Quotations.Any(q => q.DriverId == driverId))
+                    {
+                        removeRequests.Add(request);
+                    }
+                }
+
+                foreach (Request request1 in removeRequests)
+                {
+                    requests.Remove(request1);
+                }
+
+                return requests;
             }
+
         }
 
         // GET: api/Requests/5
