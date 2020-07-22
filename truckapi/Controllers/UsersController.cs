@@ -43,11 +43,11 @@ namespace truckapi.Controllers
         }
 
         [HttpGet("{id}/requests")]
-        public async Task<ActionResult> GetRequest(string id, bool isDriver)
+        public async Task<ActionResult> GetRequest(string id, bool isDriver,int status)
         {
             if (isDriver == true)
             {
-                List<Request> request = await _context.Request.Where(r => r.DriverId == id)
+                List<Request> request = await _context.Request.Where(r => r.DriverId == id && r.StatusId == status)
                     .Include(r => r.User)
                     .Include(r => r.Status)
                     .Include(r => r.Reciver.Address.Places)
