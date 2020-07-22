@@ -48,6 +48,7 @@ namespace truckapi.Controllers
             else
             {
                 List<Request> requests = await _context.Request.Include(r => r.CommodityOwner.Address.Places).Include(r => r.Reciver.Address.Places)
+                            .Include(r => r.User)
                             .Include(r => r.Quotations).ThenInclude(q => q.Driver)
                             .Include(r => r.Status).OrderBy(r => r.StatusId).ThenByDescending(r => r.DateCreate)
                             .Where(r => r.StatusId == int.Parse(status))
